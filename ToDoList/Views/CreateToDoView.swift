@@ -14,6 +14,7 @@ struct CreateToDoView: View {
     @State private var userDescription = ""
     @State private var isCompleted = false
     @State private var isShowing = false
+    @State private var taskIsComplete = true
     var body: some View {
         NavigationStack{
             Form{
@@ -28,17 +29,19 @@ struct CreateToDoView: View {
                         .ignoresSafeArea(.keyboard, edges: .bottom)
                 }
                 Section{
-                    Button(action: {addTodo()}, label: {
+                    Button(action: {addTodo()
+                        UIImpactFeedbackGenerator(style: .light).impactOccurred()}, label: {
                         HStack{
                             Spacer()
                             Text("Ekle")
                             Spacer()
                         }
                     }).buttonStyle(.borderedProminent)
-                        .alert("Listeye eklendi", isPresented: $isShowing){
+                    .alert("Listeye eklendi", isPresented: $isShowing){
                             Button("Tamam"){}
                         }
                 }
+                .frame(width: 100)
                 .listRowInsets(.init())
                 .listRowBackground(Color.clear)
             }
