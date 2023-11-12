@@ -11,40 +11,47 @@ import SwiftData
 struct ToDoListView: View {
     @Environment(\.modelContext) private var modelContext
     @State private var showingSheet = false
+    @State private var path = NavigationPath()
     @Query private var todoItems: [ToDoItem]
+    @Query (filter: #Predicate<ToDoItem> {todo in
+        todo.isCompleted == false
+    }) var todos: [ToDoItem]
     @Query(filter: #Predicate<ToDoItem> {todo in
         todo.isCompleted == true
     }) var completedTodos: [ToDoItem]
     var body: some View {
-        NavigationStack{
+        NavigationStack(path: $path){
             List{
-                ForEach(todoItems){todo in
-                    VStack(alignment: .leading){
-                        NavigationLink(destination: ToDoDetailView(todo: todo)){
-                            if todo.isCompleted == true{
+                Section(header: Text("Tamamlanmayanlar")){
+                    ForEach(todos){todo in
+                        HStack{
+                            NavigationLink(value: todo){
                                 Text(todo.title)
-                                    .font(.headline)
-                                    .strikethrough()
-                            }else{
-                                Text(todo.title)
-                                    .font(.headline)
+                                .font(.headline)
                             }
                         }
-                    }
-                    HStack{
-                        Button{
-                            UIImpactFeedbackGenerator(style: .light).impactOccurred()
-                            todo.isCompleted.toggle()
-                        } label : {
-                            Image(systemName: todo.isCompleted ? "checkmark.circle.fill" : "circle")
-                        }
-                    }
+                    }.onDelete(perform: deleteTodo(_:))
 
-                }.onDelete(perform: deleteTodo(_:))
+                }
+                Section(header: Text("Tamamlananlar")){
+                    ForEach(completedTodos){todo in
+                        HStack{
+                            NavigationLink(value: todo){
+                                Text(todo.title)
+                                .font(.headline)
+                                .strikethrough()
+                            }
+                        }
+                    }.onDelete(perform: deleteTodo(_:))
+                }
             }
             .navigationTitle("To Do List")
             .navigationBarTitleDisplayMode(.automatic)
+            .navigationDestination(for: ToDoItem.self){todo in
+                ToDoDetailView(todo: todo)
+            }
             .toolbar{
+                EditButton()
                 Button(action: {
                     showingSheet.toggle()
                 }){

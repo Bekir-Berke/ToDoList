@@ -9,6 +9,7 @@ import SwiftUI
 import SwiftData
 struct CreateToDoView: View {
     @Environment(\.modelContext) private var modelContext
+    @Environment(\.dismiss) private var dismiss
     @Query private var todoItems: [ToDoItem]
     @State private var title = ""
     @State private var userDescription = ""
@@ -38,7 +39,9 @@ struct CreateToDoView: View {
                         }
                     }).buttonStyle(.borderedProminent)
                     .alert("Listeye eklendi", isPresented: $isShowing){
-                            Button("Tamam"){}
+                        Button("Tamam"){
+                                dismiss()
+                            }
                         }
                 }
                 .frame(width: 100)
@@ -46,7 +49,12 @@ struct CreateToDoView: View {
                 .listRowBackground(Color.clear)
             }
             .navigationTitle("To Do List")
-            .navigationBarTitleDisplayMode(.large)
+            .navigationBarTitleDisplayMode(.inline)
+            .toolbar{
+                Button("Vazgeç"){
+                    dismiss()
+                }
+            }
         }
     }
     func addTodo(){

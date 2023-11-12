@@ -38,6 +38,14 @@
 /* End PBXFrameworksBuildPhase section */
 
 /* Begin PBXGroup section */
+		E105CB802AF6BDEE001DA3D5 /* Models */ = {
+			isa = PBXGroup;
+			children = (
+				E1902D882AC605C0004198D7 /* ToDoItem.swift */,
+			);
+			path = Models;
+			sourceTree = "<group>";
+		};
 		E17A14962AC74CB00076BE7E /* Views */ = {
 			isa = PBXGroup;
 			children = (
@@ -67,9 +75,9 @@
 		E1902D772AC60415004198D7 /* ToDoList */ = {
 			isa = PBXGroup;
 			children = (
+				E105CB802AF6BDEE001DA3D5 /* Models */,
 				E17A14962AC74CB00076BE7E /* Views */,
 				E1902D782AC60415004198D7 /* ToDoListApp.swift */,
-				E1902D882AC605C0004198D7 /* ToDoItem.swift */,
 				E1902D7E2AC60416004198D7 /* Assets.xcassets */,
 				E1902D802AC60416004198D7 /* Preview Content */,
 			);
